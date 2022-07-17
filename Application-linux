@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# update SO Linux Ubuntu
+sudo apt  update -y
+
+#--------install agnte-zabbix (test OK)------------------------------#
+
+# put name do host (should the same in the AWS) after Hostname=(Name-Server) below
+
+wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+focal_all.deb
+sudo dpkg -i zabbix-release_5.0-1+focal_all.deb
+sudo apt install zabbix-agent -y
+sudo systemctl start zabbix-agent
+sudo sed -i '117s/.*/Server=zabbix-server.bspcloud.com/' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i '158s/.*/ServerActive=zabbix-server.bspcloud.com/' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i '169s/.*/Hostname=Name-Server/' /etc/zabbix/zabbix_agentd.conf
+sudo systemctl restart zabbix-agent
+
+#--------------------------------------------------------------------#
+
+#---------Add Users--------------------------------------------------#
+
+sudo adduser teste1
+sudo passwd Trocar2022
+
+sudo adduser admin
+sudo passwd Trocar2022
+
+# add user to sudo (check test)
+sudo echo >> /etc/sudoers "bsp     ALL=(ALL:ALL) ALL"
+sudo echo >> /etc/sudoers "admin     ALL=(ALL:ALL) ALL"
+
+# add config file /etc/ssh/sshd_config (check test)
+
+sudo echo >> /etc/ssh/sshd_config "Match User bsp"
+sudo echo >> /etc/ssh/sshd_config "        PasswordAuthentication yes"
+sudo echo >> /etc/ssh/sshd_config "Match User admin"
+sudo echo >> /etc/ssh/sshd_config "        PasswordAuthentication yes"
+
+# restart sshd service
+service sshd reload
+
+#--------------------------------------------------------------------#
+
+#----------Install VSFTPD----------------------#
+
+sudo apt install vsftpd
+usermod -d /var/www/html/ admin
+sudo chown root:admin html/
+sudo chmod 775 html/ -R
+# config FTP Acess
+# sudo vi /etc/vsftpd.conf
+# Testing with FileZilla
+
+#---------------------------------------------#
+
+#---------Create Swap----------------------------------------------#
+
+sudo fallocate -l 4G /swapfile
+chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo echo >> /etc/fstab  "/swapfile   none    swap    sw    0   0"
+
+#------------------------------------------------------------------#
+
