@@ -3,7 +3,39 @@
 # update SO Linux Ubuntu
 sudo apt  update -y
 
-#--------install agnte-zabbix (test OK)------------------------------#
+#-------Install the Apache Web Server--------------------------------#
+sudo apt install apache2 -y
+# sudo systemctl status apache2
+
+# By default, Apache is configured to start automatically when the server boots.
+# Managing the Apache Process:
+# sudo systemctl start apache2
+# sudo systemctl stop apache2
+# sudo systemctl restart apache2
+# sudo systemctl reload apache2
+# sudo systemctl disable apache2
+# sudo systemctl enable apache2
+
+#-------------------------------------------------------------------#
+
+#-------Install the NGINX Web Server--------------------------------#
+sudo apt-get update
+sudo apt-get install nginx -y
+# systemctl status nginx
+
+# By default, Nginx is configured to start automatically when the server boots.
+# Managing the Nginx Process:
+# sudo systemctl start ngix
+# sudo systemctl stop nginx
+# sudo systemctl restart nginx
+# sudo systemctl reload nginx
+# sudo systemctl disable nginx
+# sudo systemctl enable nginx
+
+#-------------------------------------------------------------------#
+
+
+#--------install agnte-zabbix---------------------------------------#
 
 # put name do host (should the same in the AWS) after Hostname=(Name-Server) below
 
@@ -11,8 +43,9 @@ wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix
 sudo dpkg -i zabbix-release_5.0-1+focal_all.deb
 sudo apt install zabbix-agent -y
 sudo systemctl start zabbix-agent
-sudo sed -i '117s/.*/Server=zabbix-server.bspcloud.com/' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i '158s/.*/ServerActive=zabbix-server.bspcloud.com/' /etc/zabbix/zabbix_agentd.conf
+# Field server use DNS or IP do server-zabbix
+sudo sed -i '117s/.*/Server=zabbix-server.com/' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i '158s/.*/ServerActive=zabbix-server.com/' /etc/zabbix/zabbix_agentd.conf
 sudo sed -i '169s/.*/Hostname=Name-Server/' /etc/zabbix/zabbix_agentd.conf
 sudo systemctl restart zabbix-agent
 
@@ -20,19 +53,19 @@ sudo systemctl restart zabbix-agent
 
 #---------Add Users--------------------------------------------------#
 
-sudo adduser teste1
+sudo adduser test
 sudo passwd Trocar2022
 
 sudo adduser admin
 sudo passwd Trocar2022
 
 # add user to sudo (check test)
-sudo echo >> /etc/sudoers "bsp     ALL=(ALL:ALL) ALL"
+sudo echo >> /etc/sudoers "test     ALL=(ALL:ALL) ALL"
 sudo echo >> /etc/sudoers "admin     ALL=(ALL:ALL) ALL"
 
 # add config file /etc/ssh/sshd_config (check test)
 
-sudo echo >> /etc/ssh/sshd_config "Match User bsp"
+sudo echo >> /etc/ssh/sshd_config "Match User test"
 sudo echo >> /etc/ssh/sshd_config "        PasswordAuthentication yes"
 sudo echo >> /etc/ssh/sshd_config "Match User admin"
 sudo echo >> /etc/ssh/sshd_config "        PasswordAuthentication yes"
