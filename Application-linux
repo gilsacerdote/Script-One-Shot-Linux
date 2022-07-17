@@ -64,3 +64,39 @@ sudo echo >> /etc/fstab  "/swapfile   none    swap    sw    0   0"
 
 #------------------------------------------------------------------#
 
+#--------Install MySQL---------------------------------------------#
+
+sudo wget https://dev.mysql.com/get/mysql-apt-config_0.8.15-1_all.deb
+# sudo dpkg -i mysql-apt-config_0.8.15-1_all.deb
+# Click on First Option and Select MySQL 5.7 and Press Tab Button
+
+#update apt repository
+sudo apt-get update
+sudo apt-get install mysql-server
+
+# Run the below script on command prompt, asks below options.
+mysql_secure_installation
+
+# Securing the MySQL server deployment.
+# Enter password for user root:
+# Would you like to setup VALIDATE PASSWORD plugin?
+# Press y|Y for Yes, any other key for No: No
+
+# Change the password for root ? ((Press y|Y for Yes, any other key for No) : No
+# Remove anonymous users? (Press y|Y for Yes, any other key for No) : y
+# Disallow root login remotely? (Press y|Y for Yes, any other key for No) : y
+# Remove test database and access to it? (Press y|Y for Yes, any other key for No)  : y
+# Reload privilege tables now? (Press y|Y for Yes, any other key for No) : y
+
+# Login to MySQL 5.7 Server using below command and use password to login entered during installation.
+mysql -u root -p
+
+# Restart the MySQL Server to take effect.
+sudo systemctl restart mysql.service
+
+# Below are commands to start/restart/stop MySQL 5.7 on Ubuntu 16.04
+sudo systemctl start mysql.service
+sudo systemctl restart mysql.service
+sudo systemctl stop mysql.service
+
+#----------------------------------------------------------------#
