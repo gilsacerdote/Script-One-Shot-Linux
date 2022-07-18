@@ -53,21 +53,18 @@ sudo systemctl restart zabbix-agent
 
 #---------Add Users--------------------------------------------------#
 
-sudo adduser test
-sudo passwd Trocar2022
-
-sudo adduser admin
-sudo passwd Trocar2022
+sudo useradd -m teste1 -p $(openssl passwd -1 trocar2022) -s /bin/bash
+sudo useradd -m teste2 -p $(openssl passwd -1 trocar2022) -s /bin/bash
 
 # add user to sudo (check test)
-sudo echo >> /etc/sudoers "test     ALL=(ALL:ALL) ALL"
-sudo echo >> /etc/sudoers "admin     ALL=(ALL:ALL) ALL"
+sudo echo >> /etc/sudoers "teste1      ALL=(ALL:ALL) ALL"
+sudo echo >> /etc/sudoers "teste2      ALL=(ALL:ALL) ALL"
 
 # add config file /etc/ssh/sshd_config (check test)
 
-sudo echo >> /etc/ssh/sshd_config "Match User test"
+sudo echo >> /etc/ssh/sshd_config "Match User teste1"
 sudo echo >> /etc/ssh/sshd_config "        PasswordAuthentication yes"
-sudo echo >> /etc/ssh/sshd_config "Match User admin"
+sudo echo >> /etc/ssh/sshd_config "Match User teste2"
 sudo echo >> /etc/ssh/sshd_config "        PasswordAuthentication yes"
 
 # restart sshd service
