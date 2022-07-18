@@ -37,7 +37,7 @@ sudo apt-get install nginx -y
 
 #--------install agnte-zabbix---------------------------------------#
 
-# put name do host (should the same in the AWS) after Hostname=(Name-Server) below
+# put name of the host (should the same in the AWS) after Hostname=(Name-Server) below
 
 wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+focal_all.deb
 sudo dpkg -i zabbix-release_5.0-1+focal_all.deb
@@ -74,7 +74,7 @@ service sshd reload
 
 #----------Install VSFTPD----------------------#
 
-sudo apt install vsftpd
+sudo apt install vsftpd -y
 usermod -d /var/www/html/ admin
 sudo chown root:admin html/
 sudo chmod 775 html/ -R
